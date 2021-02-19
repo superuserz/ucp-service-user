@@ -15,4 +15,4 @@ RUN mvn clean package
 FROM openjdk:8-jdk-alpine
 WORKDIR /app
 COPY --from=builder /app/target/*.jar /app.jar
-CMD ["java -jar app.jar"] 
+CMD ["java -jar /app.jar"] 
