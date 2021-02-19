@@ -1,4 +1,8 @@
 FROM alpine/git
+WORKDIR /maven
+RUN git clone https://github.com/superuserz/ucp-service-common.git
+
+FROM alpine/git
 WORKDIR /app
 RUN git clone https://github.com/superuserz/ucp-service-user.git
 
