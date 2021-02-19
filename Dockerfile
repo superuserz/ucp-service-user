@@ -14,4 +14,4 @@ RUN mvn clean package
 
 FROM openjdk:8-jdk-alpine
 COPY --from=builder /app/target/*.jar app.jar
-CMD ["java -jar app.jar"] 
+ENTRYPOINT ["java","-jar","/app.jar"]
