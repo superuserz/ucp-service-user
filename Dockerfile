@@ -1,20 +1,18 @@
 FROM alpine/git
-WORKDIR /maven
-RUN git clone https://github.com/superuserz/ucp-service-common.git
-
-FROM maven:3.5-jdk-8-alpine
-RUN mvn clean install
-
-FROM alpine/git
+WORKDIR /dependency
+RUN git clone https://github.com/superuserz/ucp-service-common.git 
 WORKDIR /app
 RUN git clone https://github.com/superuserz/ucp-service-user.git
 
-
 FROM maven:3.5-jdk-8-alpine
+WORKDIR /dependency
+COPY --from=0 /dependency/ucp-service-common /dependency
+RUN mvn clean install
 WORKDIR /app
-RUN mvn install
+COPY --from=0 /app/ucp-service-user /app
+RUN mvn clean install
 
-FROM openjdk:8-jdk-alpine
+FROM openjdk:8-jre-alpine
 WORKDIR /app
-COPY /app/target/*.jar app.jar
+COPY --from=1 /app/target/*.jar app.jar
 CMD ["java -jar app.jar"] 
