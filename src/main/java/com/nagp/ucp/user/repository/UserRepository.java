@@ -19,4 +19,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	@Query(value = "select u from User u where u.contact = ?1 OR u.email = ?2")
 	public List<User> getUsersByContactOrEmail(String contact, String email);
+
+	@Query(value = "select u from User u where u.id = ?1 AND u.type = 'PROVIDER'")
+	public User getProviderById(int providerId);
 }

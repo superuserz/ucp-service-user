@@ -23,7 +23,7 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public User getUserById(int id) throws UCPException {
+	public User getUserById(final int id) throws UCPException {
 
 		if (userRepository.existsById(id)) {
 			return userRepository.findById(id).get();
@@ -33,7 +33,7 @@ public class UserService {
 
 	}
 
-	public void deleteUserById(int id) throws UCPException {
+	public void deleteUserById(final int id) throws UCPException {
 		if (userRepository.existsById(id)) {
 			userRepository.deleteById(id);
 		} else {
@@ -42,15 +42,23 @@ public class UserService {
 
 	}
 
-	public List<User> getUsersByPincode(int code) {
+	public List<User> getUsersByPincode(final int code) {
 		return userRepository.getUsersByPincode(code);
 	}
 
-	public List<User> getUsersByType(String type) {
+	public User getProvider(final int providerId) {
+		User user = userRepository.getProviderById(providerId);
+		if (null == user) {
+			throw new UCPException("ucp.service.user.001", "Provider Does Not Exist");
+		}
+		return user;
+	}
+
+	public List<User> getUsersByType(final String type) {
 		return userRepository.getUsersByType(type);
 	}
 
-	public void updateUser(EditUserRequest request) throws UCPException {
+	public void updateUser(final EditUserRequest request) throws UCPException {
 
 		try {
 			User user = new User();
@@ -71,7 +79,7 @@ public class UserService {
 
 	}
 
-	public void createUser(AddUserRequest request) throws UCPException {
+	public void createUser(final AddUserRequest request) throws UCPException {
 
 		if (userExistsByContactOrEmail(request.getContact(), request.getEmail())) {
 			throw new UCPException("ucp.service.user.003", "Contact Already Exists");
