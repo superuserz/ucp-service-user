@@ -43,7 +43,11 @@ public class UserService {
 	}
 
 	public List<User> getUsersByPincode(final int code) {
-		return userRepository.getUsersByPincode(code);
+		List<User> users = userRepository.getUsersByPincode(code);
+		if (null == users || users.isEmpty()) {
+			throw new UCPException("ucp.service.user.001", "No users found.");
+		}
+		return users;
 	}
 
 	public User getProvider(final int providerId) {
@@ -55,7 +59,13 @@ public class UserService {
 	}
 
 	public List<User> getUsersByType(final String type) {
-		return userRepository.getUsersByType(type);
+		UserTypeEnum validUser = UserTypeEnum.parse(type);
+		if (null != validUser) {
+			return userRepository.getUsersByType(type);
+		} else {
+			throw new UCPException("ucp.service.user.004", "Invalid User Type");
+		}
+
 	}
 
 	public void updateUser(final EditUserRequest request) throws UCPException {
@@ -79,7 +89,7 @@ public class UserService {
 
 	}
 
-	public void createUser(final AddUserRequest request) throws UCPException {
+	public User createUser(final AddUserRequest request) throws UCPException {
 
 		if (userExistsByContactOrEmail(request.getContact(), request.getEmail())) {
 			throw new UCPException("ucp.service.user.003", "Contact Already Exists");
@@ -96,7 +106,7 @@ public class UserService {
 		user.setPremium(request.isPremium());
 		user.setType(UserTypeEnum.parse(request.getType()));
 
-		userRepository.save(user);
+		return userRepository.save(user);
 	}
 
 	private boolean userExistsByContactOrEmail(String contact, String email) {

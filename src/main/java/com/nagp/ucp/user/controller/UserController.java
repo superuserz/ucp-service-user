@@ -40,26 +40,28 @@ public class UserController {
 
 	@DeleteMapping("/{id}")
 	@ApiOperation(value = "Deletes a User by ID")
-	public void deleteUser(@PathVariable final int id) throws UCPException {
+	public BaseResponse<Void> deleteUser(@PathVariable final int id) throws UCPException {
 		userService.deleteUserById(id);
+		return new BaseResponse<>();
 	}
 
 	@PostMapping
 	@ApiOperation(value = "Edit Existing User")
-	public void updateUser(@RequestBody final EditUserRequest request) throws UCPException {
+	public BaseResponse<Void> updateUser(@RequestBody final EditUserRequest request) throws UCPException {
 		userService.updateUser(request);
+		return new BaseResponse<>();
 	}
 
 	@PutMapping
 	@ApiOperation(value = "Create a New User")
-	public void createUser(@RequestBody final AddUserRequest request) throws UCPException {
-		userService.createUser(request);
+	public BaseResponse<User> createUser(@RequestBody final AddUserRequest request) throws UCPException {
+		return new BaseResponse<User>(userService.createUser(request));
 	}
 
 	@GetMapping("/pincode/{pincode}")
 	@ApiOperation(value = "Gets User Details by Pincode")
-	public List<User> getUserByPincode(@PathVariable final int pincode) throws UCPException {
-		return userService.getUsersByPincode(pincode);
+	public BaseResponse<List<User>> getUserByPincode(@PathVariable final int pincode) throws UCPException {
+		return new BaseResponse<>(userService.getUsersByPincode(pincode));
 	}
 
 	@GetMapping("/provider/{providerId}")
@@ -70,8 +72,8 @@ public class UserController {
 
 	@GetMapping("/type/{type}")
 	@ApiOperation(value = "Gets Users belonging to a particular type")
-	public List<User> getUsersByType(@PathVariable final String type) throws UCPException {
-		return userService.getUsersByType(type);
+	public BaseResponse<List<User>> getUsersByType(@PathVariable final String type) throws UCPException {
+		return new BaseResponse<>(userService.getUsersByType(type));
 	}
 
 }
