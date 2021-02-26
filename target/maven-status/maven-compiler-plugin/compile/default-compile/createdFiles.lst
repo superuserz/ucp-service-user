@@ -1,8 +1,0 @@
-com\nagp\ucp\user\controller\UserController.class
-com\nagp\ucp\user\entity\UserTypeEnum.class
-com\nagp\ucp\user\repository\UserRepository.class
-com\nagp\ucp\user\request\AddUserRequest.class
-com\nagp\ucp\user\UcpServiceUserApplication.class
-com\nagp\ucp\user\request\EditUserRequest.class
-com\nagp\ucp\user\service\UserService.class
-com\nagp\ucp\user\entity\User.class
